@@ -13,8 +13,6 @@
 // remaining elements in the array. We can write this succinctly in ES2015 with
 // array destructuring and the spread operator.
 //
-// [functions](function.html)
-//
 // ```js
 // const [head, ...tail] = array;
 // ```
@@ -102,8 +100,8 @@ function reduce(fn, memo, array) {
 // ---
 
 // `reduce2` is a special case of `reduce` whereby the initial memo is set to
-// be the first element in the array. This translate to calling `reduce` on the
-// tail of the array with the initial memo's being the first element in the
+// be the first element in the array. This translates to calling `reduce` on
+// the tail of the array with the initial memo's being the first element in the
 // original array.
 //
 // ```js
@@ -120,7 +118,7 @@ function reduce2(fn, array) {
 // direction. Instead of reducing the array from left to right, or from the
 // first element to the last, `reduceRight` reduces the array from right to
 // left. This means the first call to `fn` will be with the initial `memo` and
-// the *last* element in the array. Therefore, `reduceRight` traverses the
+// the **last** element in the array. Therefore, `reduceRight` traverses the
 // array in reverse. `reduceRight` is also known as `foldr` and `foldRight`.
 //
 // ```js
@@ -138,26 +136,11 @@ function reduceRight(fn, memo, array) {
 
 // ---
 
-// Like its `reduce2` counterpart, `reduceRight2` sets the initial memo value,
-// except it uses the *last* element as the initial value. Like `reduceRight`,
-// `reduceRight2` traverses the array in the reverse direction.
-//
-// ```js
-// reduceRight(add, ['a', 'b', 'c']); // 'cba' not 'abc'!
-// ```
-function reduceRight2(fn, array) {
-  const [head, ...tail] = array;
-  return reduceRight(fn, head, tail);
-}
-
-// ---
-
 export {
   isEmpty,
   map,
   filter,
   reduce,
   reduce2,
-  reduceRight,
-  reduceRight2
+  reduceRight
 };

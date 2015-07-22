@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>list-oop.js</title>
+  <title>OOP-Style Lists</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -51,12 +51,6 @@
     
     <ul class="sections">
         
-          <li id="title">
-              <div class="annotation">
-                  <h1>list-oop.js</h1>
-              </div>
-          </li>
-        
         
         
         <li id="section-1">
@@ -65,18 +59,90 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <h1 id="oop-style-lists">OOP-Style Lists</h1>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { reduceRight <span class="hljs-keyword">as</span> arrayReduceRight } <span class="hljs-keyword">from</span> <span class="hljs-string">'./array'</span>;
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Lists are one of the most common data structures in functional programming.
+They are recursive tree structures. Each node wraps some value, known as the
+<strong>head</strong>, and has a reference to the next node in the list, known as the
+<strong>tail</strong>.</p>
+<p>Operating on lists requires recursive functions. As with recursive array
+functions, we need some base case. With arrays it was the empty array.
+Likewise with lists the base case is the empty list, also known as <strong>Nil</strong>.</p>
+<p><strong>Before proceeding</strong>, please check out the purely functional approach to lists
+<a href="/list.html">here</a>.</p>
+<p>Unlike the functional approach, we use a hybrid OOP/functional approach
+here. One benefit to this is that both <code>Nil</code> and an instance of <code>Cons</code>
+adhere to the same interface, so we can make recursive calls on <code>tails</code>
+without needing to explicitly check for the empty list, or <code>Nil</code>.</p>
 
-<span class="hljs-keyword">const</span> Nil = {
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">import</span> { reduceRight <span class="hljs-keyword">as</span> arrayReduceRight } <span class="hljs-keyword">from</span> <span class="hljs-string">'./array'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="nil">Nil</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>As mentioned, <code>Nil</code> is the empty list and needed for the base case. Without
+<code>Nil</code>, our recursive functions would never know when they reach the end of
+the list.</p>
+<p><code>Nil</code> is a singleton, so we will just define an object literal with all
+required methods. Each method basically accomplishes what we did in the
+functional approach when checking for the empty list with <code>isEmpty</code>. Note
+that we add getters for <code>head</code> and <code>tail</code> that throw errors because <code>Nil</code>
+can’t have either of those.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> Nil = {
   get head() {
     <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'No head of Nil'</span>);
   },
 
   get tail() {
     <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'No tail of Nil'</span>);
+  },
+
+  isEmpty() {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+  },
+
+  toArray() {
+    <span class="hljs-keyword">return</span> [];
+  },
+
+  toString() {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Nil'</span>;
   },
 
   map() {
@@ -87,19 +153,78 @@
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
   },
 
-  reduce(memo) {
+  reduce(fn, memo) {
     <span class="hljs-keyword">return</span> memo;
   },
 
-  reduce1(memo) {
+  reduce1(fn, memo) {
+    <span class="hljs-keyword">return</span> memo;
+  },
+
+  reduceRight(fn, memo) {
     <span class="hljs-keyword">return</span> memo;
   }
-};
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h2 id="cons">Cons</h2>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cons</span> </span>{
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>The cons cell represents a node in a list. It wraps over some value, the
+<code>head</code>, and references the next node in the list, which may be another
+cons cell or <code>Nil</code>, signalling the end of the list.</p>
+<p>Implementing a cons cell is straightfoward. We create a <code>Cons</code> class that
+has two properties, <code>head</code> and <code>tail</code>. Remember that <code>head</code> is the value
+inside the node (e.g. a number like 42), and <code>tail</code> is the next node in the
+list (e.g. another cons cell or <code>Nil</code>).</p>
+<p>Building lists is accomplished by calls to <code>new Cons</code> or the helper <code>cons</code>
+defined later on. The last call passes in <code>Nil</code> as the <code>tail</code> to denote the
+end of the list.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">new</span> Cons(<span class="hljs-number">1</span>, <span class="hljs-keyword">new</span> Cons(<span class="hljs-number">2</span>, <span class="hljs-keyword">new</span> Cons(<span class="hljs-number">3</span>, Nil)));
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cons</span> </span>{
   constructor(head, tail) {
     <span class="hljs-keyword">this</span>.head = head;
     <span class="hljs-keyword">this</span>.tail = tail;
+  }
+
+  isEmpty() {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  toArray() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.reduce((array, value) =&gt; {
+      <span class="hljs-keyword">return</span> array.concat(value);
+    }, []);
+  }
+
+  toString() {
+    <span class="hljs-keyword">const</span> contents = <span class="hljs-keyword">this</span>.tail.reduce((current, value) =&gt; {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${current}</span>, <span class="hljs-subst">${value}</span>`</span>;
+    }, <span class="hljs-keyword">this</span>.head);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`list(<span class="hljs-subst">${contents}</span>)`</span>;
   }
 
   map(fn) {
@@ -114,27 +239,166 @@
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.filter(fn);
   }
 
-  reduce(memo, fn) {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(fn(memo, <span class="hljs-keyword">this</span>.head), fn);
+  reduce(fn, memo) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(fn, fn(memo, <span class="hljs-keyword">this</span>.head));
   }
 
   reduce1(fn) {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(<span class="hljs-keyword">this</span>.head, fn);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(fn, <span class="hljs-keyword">this</span>.head);
   }
-}
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cons</span>(<span class="hljs-params">head, tail</span>) </span>{
+  reduceRight(fn, memo) {
+    <span class="hljs-keyword">return</span> fn(<span class="hljs-keyword">this</span>.tail.reduceRight(fn, memo), <span class="hljs-keyword">this</span>.head);
+  }
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="helpers">Helpers</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Helper function for constructing cons cells without calling the constructor
+directly. Shame, shame on those leaky abstractions.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> list = cons(<span class="hljs-number">1</span>, cons(<span class="hljs-number">2</span>, cons(<span class="hljs-number">3</span>, Nil)));
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cons</span>(<span class="hljs-params">head, tail</span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Cons(head, tail);
-}
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <hr>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params">...values</span>) </span>{
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Helper function to create a list from an array. We utilize the <code>reduceRight</code>
+function for arrays to fold over each value in the array to produce
+subsequent cons cells.</p>
+<p>Notice we have to go in a right-to-left direction and start with <code>Nil</code> as
+the initial memo value. We want to build the tree from the bottom with
+<code>Nil</code>.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> list = fromArray([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fromArray</span>(<span class="hljs-params">values</span>) </span>{
   <span class="hljs-keyword">return</span> arrayReduceRight((list, value) =&gt; cons(value, list), Nil, values);
-}
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <hr>
 
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Unnecessary function, but allows us to use an “array-less” syntax for
+creating lists.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> list = create(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params">...values</span>) </span>{
+  <span class="hljs-keyword">return</span> fromArray(values);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">export</span> {
   Nil,
   Cons,
   cons,
+  fromArray,
   create
 };</pre></div></div>
             
