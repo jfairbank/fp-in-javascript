@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Yo dawg, functions for functions</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="array.html">
+                  array.js
+                </a>
+              
+                
+                <a class="source" href="function.html">
+                  function.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="list-oop.html">
+                  list-oop.js
+                </a>
+              
+                
+                <a class="source" href="list.html">
+                  list.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="yo-dawg-functions-for-functions">Yo dawg, functions for functions</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>These functions faciliate building up new functions from smaller
+functions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">import</span> { reduceRight } <span class="hljs-keyword">from</span> <span class="hljs-string">'./array'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="partial">Partial</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><code>partial</code> works by taking a function, “prefilling” the values of some number
+of parameters, and returning a new function with those parameter values
+filled. The returned function then takes in any remaining arguments when
+invoked.</p>
+<p><code>partial</code> is very easy to implement in ES2015 with rest parameters via the
+spread operator. The newly created function is a closure that will remember
+the <code>args</code> that were intially supplied. It can then take in <code>otherArgs</code> and
+call the original function with the partially applied <code>args</code> and newly
+supplied <code>otherArgs</code> via the spread operator.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> add = (x, y) =&gt; x + y;
+<span class="hljs-keyword">const</span> add1 = partial(add, <span class="hljs-number">1</span>);
+
+add1(<span class="hljs-number">2</span>); <span class="hljs-comment">// 3</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">partial</span>(<span class="hljs-params">fn, ...args</span>) </span>{
+  <span class="hljs-keyword">return</span> (...otherArgs) =&gt; fn(...args, ...otherArgs);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="curry">Curry</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><code>curry</code> offers a way to inject <code>partial</code> functionality directly into a
+function. A curried function will apply its argument when invoked until all
+arguments have been supplied. If not all arguments are supplied, then the
+curried function will return a new function with the previous arguments
+“prefilled”.</p>
+<p>Any number of arguments can be taken with each call. If a call happens to
+satisfy all formal parameters, then the function will actually be invoked.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> add = curry((x, y, z) =&gt; x + y + z);
+
+<span class="hljs-comment">// Call one argument at a time</span>
+add(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>); <span class="hljs-comment">// 3 calls to yield 6</span>
+
+<span class="hljs-comment">// Same as:</span>
+<span class="hljs-keyword">const</span> add1 = add(<span class="hljs-number">1</span>);
+<span class="hljs-keyword">const</span> add3 = add1(<span class="hljs-number">2</span>);
+add3(<span class="hljs-number">3</span>); <span class="hljs-comment">// 6</span>
+
+<span class="hljs-comment">// Other combinations:</span>
+add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)(<span class="hljs-number">3</span>); <span class="hljs-comment">// 2 calls to yield 6</span>
+add(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// 2 calls to yield 6</span>
+add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// 1 call to yield 6</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">curry</span>(<span class="hljs-params">fn, len = fn.length</span>) </span>{
+  <span class="hljs-keyword">return</span> (...args) =&gt; {
+    <span class="hljs-keyword">if</span> (args.length &gt;= len) {
+      <span class="hljs-keyword">return</span> fn(...args);
+    }
+
+    <span class="hljs-keyword">return</span> curry(
+      partial(fn, ...args),
+      len - args.length
+    );
+  };
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="compose">Compose</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Function composition allows functions to be combined to form new functions.
+Composition works by passing the output of one function as the input to the
+next function in a chain of functions.</p>
+<p>The order of function calls is important. The last function supplied to a
+<code>compose</code> function will be the first function called when the new function
+is actually invoked. Therefore, the function calls flow from right to left.</p>
+<p><code>compose2</code> is the simple case where we take two functions to produce a new
+function.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> double = (x) =&gt; x + x;
+<span class="hljs-keyword">const</span> square = (x) =&gt; x * x;
+<span class="hljs-keyword">const</span> doubleAndSquare = compose2(square, double);
+
+doubleAndSquare(<span class="hljs-number">4</span>); <span class="hljs-comment">// 64</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compose2</span>(<span class="hljs-params">f, g</span>) </span>{
+  <span class="hljs-keyword">return</span> (...args) =&gt; f(g(...args));
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>The more general <code>compose</code> function takes any number of functions to produce
+a new composed function. We can treat the variadic number of function
+parameters as an array and utilize the <code>reduceRight</code> function to
+successively call each original function.</p>
+<p>Remember <code>reduceRight</code> “reduces” or “folds over” an array to produce a new
+value. In this case, we want to reduce to the final output and in a
+right-to-left direction, so we call each function and use its return value
+as the new <code>memo</code> value.</p>
+<p>The initial memo will be the arguments supplied to the composed function.
+We capture those arguments in an array via the spread operator, so we make
+sure to keep <code>memo</code> as an array with each call inside <code>reduceRight</code>. With
+subsequent calls, <code>memo</code> will only contain one element because a function
+can only return one value. Therefore, we index into the result array with
+index <code>0</code> for our final value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compose</span>(<span class="hljs-params">...fns</span>) </span>{
+  <span class="hljs-keyword">return</span> (...args) =&gt; {
+    <span class="hljs-keyword">const</span> result = reduceRight((memo, fn) =&gt; {
+      <span class="hljs-keyword">return</span> [fn(...memo)];
+    }, args, fns);
+
+    <span class="hljs-keyword">return</span> result[<span class="hljs-number">0</span>];
+  };
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">export</span> { partial, curry, compose2, compose };</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

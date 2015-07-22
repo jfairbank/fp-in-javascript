@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>list-oop.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="array.html">
+                  array.js
+                </a>
+              
+                
+                <a class="source" href="function.html">
+                  function.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="list-oop.html">
+                  list-oop.js
+                </a>
+              
+                
+                <a class="source" href="list.html">
+                  list.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>list-oop.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { reduceRight <span class="hljs-keyword">as</span> arrayReduceRight } <span class="hljs-keyword">from</span> <span class="hljs-string">'./array'</span>;
+
+<span class="hljs-keyword">const</span> Nil = {
+  get head() {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'No head of Nil'</span>);
+  },
+
+  get tail() {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'No tail of Nil'</span>);
+  },
+
+  map() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  filter() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },
+
+  reduce(memo) {
+    <span class="hljs-keyword">return</span> memo;
+  },
+
+  reduce1(memo) {
+    <span class="hljs-keyword">return</span> memo;
+  }
+};
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cons</span> </span>{
+  constructor(head, tail) {
+    <span class="hljs-keyword">this</span>.head = head;
+    <span class="hljs-keyword">this</span>.tail = tail;
+  }
+
+  map(fn) {
+    <span class="hljs-keyword">return</span> cons(fn(<span class="hljs-keyword">this</span>.head), <span class="hljs-keyword">this</span>.tail.map(fn));
+  }
+
+  filter(fn) {
+    <span class="hljs-keyword">if</span> (fn(<span class="hljs-keyword">this</span>.head)) {
+      <span class="hljs-keyword">return</span> cons(<span class="hljs-keyword">this</span>.head, <span class="hljs-keyword">this</span>.tail.filter(fn));
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.filter(fn);
+  }
+
+  reduce(memo, fn) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(fn(memo, <span class="hljs-keyword">this</span>.head), fn);
+  }
+
+  reduce1(fn) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tail.reduce(<span class="hljs-keyword">this</span>.head, fn);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cons</span>(<span class="hljs-params">head, tail</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Cons(head, tail);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params">...values</span>) </span>{
+  <span class="hljs-keyword">return</span> arrayReduceRight((list, value) =&gt; cons(value, list), Nil, values);
+}
+
+<span class="hljs-keyword">export</span> {
+  Nil,
+  Cons,
+  cons,
+  create
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

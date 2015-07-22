@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Array Functions</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="array.html">
+                  array.js
+                </a>
+              
+                
+                <a class="source" href="function.html">
+                  function.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="list-oop.html">
+                  list-oop.js
+                </a>
+              
+                
+                <a class="source" href="list.html">
+                  list.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="array-functions">Array Functions</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>These are functional implementations of common array methods. They are
+similar to the recursive functions you would write for functional lists.</p>
+<p>These functions depend on recursive calls to avoid mutating state as seen in
+<code>for</code> loops. Notice that each recursive function relies upon a base case
+to stop. Without a base case, the function would create an infinite loop
+of function calls until the maximum stack size is exhausted!</p>
+<p>Another paradigm is the concept of operating on the head, or the first
+element, in the array and then applying the function on the tail, or the
+remaining elements in the array. We can write this succinctly in ES2015 with
+array destructuring and the spread operator.</p>
+<p><a href="function.html">functions</a></p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> [head, ...tail] = array;
+</code></pre>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="helpers">Helpers</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Helper function to abstract out the notion of an empty array. Allows base
+case checks in recursive functions to be more declarative.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isEmpty</span>(<span class="hljs-params">array</span>) </span>{
+  <span class="hljs-keyword">return</span> array.length === <span class="hljs-number">0</span>;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h2 id="map">Map</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><code>map</code> is arguably one of the most famous functions in functional
+programming. It allows us to transform the values in an array by applying
+<code>fn</code> to each value and returning a new array of the mapped values.</p>
+<p>For example, we could use <code>map</code> to double every number in an array of
+numbers.</p>
+<pre><code class="lang-js">map(n =&gt; n * <span class="hljs-number">2</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// [2, 4, 6]</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">map</span>(<span class="hljs-params">fn, array</span>) </span>{
+  <span class="hljs-keyword">if</span> (isEmpty(array)) {
+    <span class="hljs-keyword">return</span> array;
+  }
+
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+
+  <span class="hljs-keyword">return</span> [fn(head), ...map(fn, tail)];
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2 id="filter">Filter</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><code>filter</code>, as its name suggests, allows you to filter the values in an
+array. A great example is selecting all the numbers greater than 3 in
+an array of numbers.</p>
+<pre><code class="lang-js">filter(n =&gt; n &gt; <span class="hljs-number">3</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]); <span class="hljs-comment">// [4, 5]</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params">fn, array</span>) </span>{
+  <span class="hljs-keyword">if</span> (isEmpty(array)) {
+    <span class="hljs-keyword">return</span> array;
+  }
+
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+
+  <span class="hljs-keyword">if</span> (fn(head)) {
+    <span class="hljs-keyword">return</span> [head, ...filter(fn, tail)];
+  }
+
+  <span class="hljs-keyword">return</span> filter(fn, tail);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="reduce">Reduce</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><code>reduce</code> is another of the functional programming all-stars. <code>reduce</code> is
+also known as <code>fold</code>, <code>foldLeft</code>, and <code>foldl</code>. The purpose of <code>reduce</code> is to
+“reduce”, or “fold over”, the values in an array to produce a new value. An
+important piece of <code>reduce</code> is the <code>memo</code> parameter. As the name suggests,
+<code>memo</code> keeps a “memo” of the currently accumulated value that we are
+reducing to. It is critical to supply the starting point for reduce by
+providing an initial memo value.</p>
+<p>The quintessential example is finding the sum of numbers in an array of
+numbers. The initial memo value would naturally be 0 then.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> add = (x, y) =&gt; x + y;
+reduce(add, <span class="hljs-number">0</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// 6</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce</span>(<span class="hljs-params">fn, memo, array</span>) </span>{
+  <span class="hljs-keyword">if</span> (isEmpty(array)) {
+    <span class="hljs-keyword">return</span> memo;
+  }
+
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+
+  <span class="hljs-keyword">return</span> reduce(fn, fn(memo, head), tail);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><code>reduce2</code> is a special case of <code>reduce</code> whereby the initial memo is set to
+be the first element in the array. This translate to calling <code>reduce</code> on the
+tail of the array with the initial memo’s being the first element in the
+original array.</p>
+<pre><code class="lang-js">reduce2(add, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// 6</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduce2</span>(<span class="hljs-params">fn, array</span>) </span>{
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+  <span class="hljs-keyword">return</span> reduce(fn, head, tail);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><code>reduceRight</code> is the same as <code>reduce</code> except it operates in the opposite
+direction. Instead of reducing the array from left to right, or from the
+first element to the last, <code>reduceRight</code> reduces the array from right to
+left. This means the first call to <code>fn</code> will be with the initial <code>memo</code> and
+the <em>last</em> element in the array. Therefore, <code>reduceRight</code> traverses the
+array in reverse. <code>reduceRight</code> is also known as <code>foldr</code> and <code>foldRight</code>.</p>
+<pre><code class="lang-js">reduceRight(add, <span class="hljs-string">''</span>, [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]); <span class="hljs-comment">// 'cba' not 'abc'!</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduceRight</span>(<span class="hljs-params">fn, memo, array</span>) </span>{
+  <span class="hljs-keyword">if</span> (isEmpty(array)) {
+    <span class="hljs-keyword">return</span> memo;
+  }
+
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+
+  <span class="hljs-keyword">return</span> fn(reduceRight(fn, memo, tail), head);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Like its <code>reduce2</code> counterpart, <code>reduceRight2</code> sets the initial memo value,
+except it uses the <em>last</em> element as the initial value. Like <code>reduceRight</code>,
+<code>reduceRight2</code> traverses the array in the reverse direction.</p>
+<pre><code class="lang-js">reduceRight(add, [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]); <span class="hljs-comment">// 'cba' not 'abc'!</span>
+</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduceRight2</span>(<span class="hljs-params">fn, array</span>) </span>{
+  <span class="hljs-keyword">const</span> [head, ...tail] = array;
+  <span class="hljs-keyword">return</span> reduceRight(fn, head, tail);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">export</span> {
+  isEmpty,
+  map,
+  filter,
+  reduce,
+  reduce2,
+  reduceRight,
+  reduceRight2
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
