@@ -82,7 +82,6 @@ of function calls until the maximum stack size is exhausted!</p>
 element, in the array and then applying the function on the tail, or the
 remaining elements in the array. We can write this succinctly in ES2015 with
 array destructuring and the spread operator.</p>
-<p><a href="function.html">functions</a></p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> [head, ...tail] = array;
 </code></pre>
 
@@ -287,8 +286,8 @@ reduce(add, <span class="hljs-number">0</span>, [<span class="hljs-number">1</sp
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p><code>reduce2</code> is a special case of <code>reduce</code> whereby the initial memo is set to
-be the first element in the array. This translate to calling <code>reduce</code> on the
-tail of the array with the initial memo’s being the first element in the
+be the first element in the array. This translates to calling <code>reduce</code> on
+the tail of the array with the initial memo’s being the first element in the
 original array.</p>
 <pre><code class="lang-js">reduce2(add, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// 6</span>
 </code></pre>
@@ -338,7 +337,7 @@ original array.</p>
 direction. Instead of reducing the array from left to right, or from the
 first element to the last, <code>reduceRight</code> reduces the array from right to
 left. This means the first call to <code>fn</code> will be with the initial <code>memo</code> and
-the <em>last</em> element in the array. Therefore, <code>reduceRight</code> traverses the
+the <strong>last</strong> element in the array. Therefore, <code>reduceRight</code> traverses the
 array in reverse. <code>reduceRight</code> is also known as <code>foldr</code> and <code>foldRight</code>.</p>
 <pre><code class="lang-js">reduceRight(add, <span class="hljs-string">''</span>, [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]); <span class="hljs-comment">// 'cba' not 'abc'!</span>
 </code></pre>
@@ -380,53 +379,6 @@ array in reverse. <code>reduceRight</code> is also known as <code>foldr</code> a
               
             </div>
             
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>Like its <code>reduce2</code> counterpart, <code>reduceRight2</code> sets the initial memo value,
-except it uses the <em>last</em> element as the initial value. Like <code>reduceRight</code>,
-<code>reduceRight2</code> traverses the array in the reverse direction.</p>
-<pre><code class="lang-js">reduceRight(add, [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]); <span class="hljs-comment">// 'cba' not 'abc'!</span>
-</code></pre>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reduceRight2</span>(<span class="hljs-params">fn, array</span>) </span>{
-  <span class="hljs-keyword">const</span> [head, ...tail] = array;
-  <span class="hljs-keyword">return</span> reduceRight(fn, head, tail);
-}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              
-            </div>
-            
             <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">export</span> {
   isEmpty,
@@ -434,8 +386,7 @@ except it uses the <em>last</em> element as the initial value. Like <code>reduce
   filter,
   reduce,
   reduce2,
-  reduceRight,
-  reduceRight2
+  reduceRight
 };</pre></div></div>
             
         </li>
