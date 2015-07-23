@@ -15,8 +15,9 @@
 //
 // This is a work in progress with lots of content to come. If you would like
 // to help contribute to this website or give feedback, please get in touch at
-// the GitHub repo here:
-// [jfairbank/fp-in-javascript](https://github.com/jfairbank/fp-in-javascript).
+// the GitHub repo below:
+//
+// [jfairbank/fp-in-javascript](https://github.com/jfairbank/fp-in-javascript)
 //
 // ## Links
 //
