@@ -4,7 +4,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "usage.js",
-  "scripts": {},
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp",
+    "build": "npm run gulp build",
+    "dev": "npm run gulp dev"
+  },
   "author": "Jeremy Fairbank <elpapapollo@gmail.com> (http://jeremyfairbank.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^5.8.3",
+    "docco": "^0.7.0",
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.2",
+    "gulp-webserver": "^0.9.1"
+  }
 }
